@@ -132,7 +132,7 @@ const mapMakerStyle = <style jsx>{`
         margin: 1vw 0 0;
         display: grid;
         grid-template-rows: 1fr;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1fr;
         align-items: center;
         justify-items: center;
     }

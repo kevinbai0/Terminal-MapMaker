@@ -7,7 +7,7 @@ import GameMap from "./components/GameMap";
 import ItemType from "./helpers/ItemType";
 import mapItemStyle from "./stylesheets/mapItemStyle";
 import GroupItem from "./components/GroupItem";
-import {groupColors, colorNames} from "./helpers/groupColors";
+import { groupColors, colorNames } from "./helpers/groupColors";
 import CustomHead from "./components/CustomHead";
 import PointsModal from "./components/PointsModal";
 
@@ -20,12 +20,12 @@ class MapMaker extends React.Component {
             for (let j = 0; j < 28; j++) {
                 let x = j;
                 let y = 27 - i;
-                if (x < 14 && y < 14 && -x + 13 > y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 0});
-                else if (x < 14 && y > 13 && x + 14 < y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 1});
-                else if (x > 13 && y < 14 && x - 14 > y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 0});
-                else if (x > 13 && y > 13 && -x + 41 < y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 1});
-                else if (y > 13) gameMap[i].push({ type: ItemType.VALID, colorIndex: 0, playerIndex: 1});
-                else gameMap[i].push({ type: ItemType.VALID, colorIndex: 0, playerIndex: 0});
+                if (x < 14 && y < 14 && -x + 13 > y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 0 });
+                else if (x < 14 && y > 13 && x + 14 < y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 1 });
+                else if (x > 13 && y < 14 && x - 14 > y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 0 });
+                else if (x > 13 && y > 13 && -x + 41 < y) gameMap[i].push({ type: ItemType.NON_EXISTENT, colorIndex: 0, playerIndex: 1 });
+                else if (y > 13) gameMap[i].push({ type: ItemType.VALID, colorIndex: 0, playerIndex: 1 });
+                else gameMap[i].push({ type: ItemType.VALID, colorIndex: 0, playerIndex: 0 });
             }
         }
         /* 
@@ -60,63 +60,64 @@ class MapMaker extends React.Component {
                 <CustomHead />
                 {
                     // modal for showing the user's points
-                    this.state.showModal && <PointsModal 
-                        coordinateStrings={this.state.coordinateStrings} 
-                        hideModal={() => this.setState({showModal: false})}
+                    this.state.showModal && <PointsModal
+                        coordinateStrings={this.state.coordinateStrings}
+                        hideModal={() => this.setState({ showModal: false })}
                     />
                 }
-                { /* Game Map */ }
-                <GameMap gameMap={this.state.gameMap} mapItemClick={this.mapItemClick} mapItemHover={this.mapItemHover}/>
-                
+                { /* Game Map */}
+                <GameMap gameMap={this.state.gameMap} mapItemClick={this.mapItemClick} mapItemHover={this.mapItemHover} />
+
                 { /* Options panel */}
                 <div className="map-maker-options-container">
                     <div className="container-title">Options</div>
-                    { /* Firewalls container to choose which type of firewall to place on map */ }
+                    { /* Firewalls container to choose which type of firewall to place on map */}
                     <div className="firewall-title">Choose Placement Marker</div>
                     <div className="firewalls-container options-container">
-                        <div 
+                        <div
                             className={this.state.firewallType === ItemType.FILTER ? firewallItemSelected : firewallItemClass}
                             onClick={() => this.setFirewallItem(ItemType.FILTER)}
                         >
-                            <Filter fillColor={groupColor}/>
+                            <Filter fillColor={groupColor} />
                         </div>
                         <div
                             className={this.state.firewallType === ItemType.ENCRYPTOR ? firewallItemSelected : firewallItemClass}
                             onClick={() => this.setFirewallItem(ItemType.ENCRYPTOR)}
                         >
-                            <Encryptor fillColor={groupColor}/>
+                            <Encryptor fillColor={groupColor} />
                         </div>
-                        <div 
+                        <div
                             className={this.state.firewallType === ItemType.DESTRUCTOR ? firewallItemSelected : firewallItemClass}
                             onClick={() => this.setFirewallItem(ItemType.DESTRUCTOR)}
                         >
-                            <Destructor fillColor={groupColor}/>
+                            <Destructor fillColor={groupColor} />
                         </div>
-                        <div 
+                        <div
                             className={this.state.firewallType === ItemType.VALID ? firewallItemSelected : firewallItemClass}
                             onClick={() => this.setFirewallItem(ItemType.VALID)}
                         >
-                            <div className="x" style={{color: groupColor}}>X</div>
+                            <div className="x" style={{ color: groupColor }}>X</div>
                         </div>
                     </div>
-                    { /* Each of the colors group - lets user pick which color to use */ }
+                    { /* Each of the colors group - lets user pick which color to use */}
                     <div className="groups-container options-container">
                         {
-                            this.state.groups.map((group, i) => <GroupItem 
-                                key={i} 
-                                color={groupColors[i]} 
+                            this.state.groups.map((group, i) => <GroupItem
+                                key={i}
+                                color={groupColors[i]}
                                 selected={this.state.selectedGroupIndex === i}
                                 onClick={() => this.setSelectedGroup(i)}
                             />)
                         }
                         <div className="group-item add-group-item" onClick={() => this.addGroup()}><div>+</div></div>
                     </div>
-                    { /* Utility buttons (get all points and remove all points) */ }
+                    { /* Utility buttons (get all points and remove all points) */}
                     <div className="export-points-container options-container">
-                        <div className="utility-button" onClick={() => this.getPointsAsCode()}>Get Points</div>
-                        <div className="utility-button" onClick={() => this.resetMap()}>Remove All Points</div>
+                        <div className="utility-button" onClick={() => this.getPointsAsCode("basic")}>Copy (Python)</div>
+                        <div className="utility-button" onClick={() => this.getPointsAsCode("rust")}>Copy (Rust)</div>
+                        <div className="utility-button" onClick={() => this.resetMap()}>Clear All</div>
                     </div>
-                    { /* Displays the current coordinate the user is hovering on */ }
+                    { /* Displays the current coordinate the user is hovering on */}
                     <div className="current-coordinate-container options-container">
                         <div className="current-coordinate-title">Current Coordinate</div>
                         <div className="current-coordinate-value">{this.state.currentHoveredCoordinate && this.state.currentHoveredCoordinate.x + ", " + this.state.currentHoveredCoordinate.y}</div>
@@ -129,17 +130,17 @@ class MapMaker extends React.Component {
             </div>
         )
     }
-    
+
     mapItemClick = (coordinate) => {
         // convert the x,y coordinates to i,j for indexing the array
         let i = 27 - coordinate.y;
         let j = coordinate.x;
-        
+
         // only execute if the selected coordinate is a valid coordinate or represents a change
         if (this.state.firewallType === undefined) return;
         if (this.state.gameMap[i][j].type === ItemType.NON_EXISTENT) return;
         if (this.state.gameMap[i][j].type === this.state.firewallType && this.state.gameMap[i][j].colorIndex === this.state.selectedGroupIndex) return;
-        
+
         // create copy of the map
         let mapCopy = this.state.gameMap;
         // change the coordinate selected to current selected options
@@ -197,8 +198,27 @@ class MapMaker extends React.Component {
     }
 
     // get the currently selected points and format into string to be outputted for the user
-    getPointsAsCode() {
-        let {gameMap} = this.state;
+
+    pointsToArrayString(points, style) {
+        let str = "";
+        if (style === 'rust') {
+            str += ": &[Coords] = &["
+            points.forEach((item) => {
+                str += "xy!(" + item.x + ", " + item.y + "), ";
+            });
+            str += "];";
+        } else {
+            str += "= ["
+            points.forEach((item) => {
+                str += "[" + item.x + ", " + item.y + "], ";
+            });
+            str += "]";
+        }
+        return str;
+    }
+
+    getPointsAsCode(style) {
+        let { gameMap } = this.state;
 
         let filtered = []
         gameMap.forEach((row, i) => row.forEach((item, j) => {
@@ -212,35 +232,60 @@ class MapMaker extends React.Component {
                 });
         }))
 
-        let myCoordinatesAsStrings = groupColors.map(color => ({[ItemType.DESTRUCTOR]: "", [ItemType.ENCRYPTOR]: "", [ItemType.FILTER]: "" }));
-        let enemyCoordinatesAsStrings = groupColors.map(color => ({[ItemType.DESTRUCTOR]: "", [ItemType.ENCRYPTOR]: "", [ItemType.FILTER]: "" }));
+        let myCoordinatesAsStrings = groupColors.map(color => ({ [ItemType.DESTRUCTOR]: [], [ItemType.ENCRYPTOR]: [], [ItemType.FILTER]: [] }));
+        let enemyCoordinatesAsStrings = groupColors.map(color => ({ [ItemType.DESTRUCTOR]: [], [ItemType.ENCRYPTOR]: [], [ItemType.FILTER]: [] }));
+
+
+
+        // myPoints = filtered.forEach(item => item.playerIndex === 0);
+        // myPoints = filtered.forEach(item => item.playerIndex === 1);
 
         filtered.forEach((item) => {
             if (item.playerIndex === 0) {
-                myCoordinatesAsStrings[item.colorIndex][item.type] += "[" + item.x + ", " + item.y + "]"
-                myCoordinatesAsStrings[item.colorIndex][item.type] += "   "
+                myCoordinatesAsStrings[item.colorIndex][item.type].push(item);
             }
             else if (item.playerIndex === 1) {
-                enemyCoordinatesAsStrings[item.colorIndex][item.type] += "[" + item.x + ", " + item.y + "]"
-                enemyCoordinatesAsStrings[item.colorIndex][item.type] += "   "
+                enemyCoordinatesAsStrings[item.colorIndex][item.type].push(item);
             }
         })
+
+        //convert lists to strings
+        for (let itemType of [ItemType.DESTRUCTOR, ItemType.ENCRYPTOR, ItemType.FILTER]) {
+            for (let color in myCoordinatesAsStrings) {
+                if (myCoordinatesAsStrings[color][itemType].length == 0) {
+                    delete myCoordinatesAsStrings[color][itemType]
+                } else {
+                    myCoordinatesAsStrings[color][itemType] = this.pointsToArrayString(myCoordinatesAsStrings[color][itemType], style);
+
+                }
+                if (enemyCoordinatesAsStrings[color][itemType].length == 0) {
+                    delete enemyCoordinatesAsStrings[color][itemType]
+                } else {
+                    enemyCoordinatesAsStrings[color][itemType] = this.pointsToArrayString(enemyCoordinatesAsStrings[color][itemType], style);
+
+                }
+                // enemyCoordinatesAsStrings[color][itemType] = this.pointsToArrayString(enemyCoordinatesAsStrings[color][itemType], style);
+
+            }
+        }
+
+        console.log()
+
 
         // mapped function
         const mappedToStringArray = (obj, colorIndex) => {
             let masterString = "";
             for (let item in obj) {
                 let val = obj[item]
-                                .trim()
-                                .split("   ")
-                                .reduce((prevStr, currentStr) => prevStr === "[" ? prevStr + currentStr : prevStr + ", " + currentStr, "[") + "]";
+                    .trim();
                 if (val.length > 2) {
                     // filters if a string is simply: []
-                    let typeString = "filters";
-                    if (item === ItemType.DESTRUCTOR) typeString = "destructors"
-                    else if (item === ItemType.ENCRYPTOR) typeString = "encryptors";
+                    let typeString = "wall";
+                    if (item === ItemType.DESTRUCTOR) typeString = "turret"
+                    else if (item === ItemType.ENCRYPTOR) typeString = "encryptor";
                     if (masterString) masterString += "\n";
-                    masterString += colorNames[colorIndex] + "_" + typeString + "_points = " + val;
+                    let prefix = style === "rust" ? "const " : "";
+                    masterString += prefix + colorNames[colorIndex] + "_" + typeString + "_points " + val;
                 }
             }
             return masterString;
@@ -250,13 +295,13 @@ class MapMaker extends React.Component {
         myCoordinatesAsStrings = myCoordinatesAsStrings.map(mappedToStringArray);
         enemyCoordinatesAsStrings = enemyCoordinatesAsStrings.map(mappedToStringArray);
 
-        
+
 
         this.setState({
             showModal: true,
             coordinateStrings: {
                 myPointsStrings: myCoordinatesAsStrings,
-                enemyPointsStrings: enemyCoordinatesAsStrings 
+                enemyPointsStrings: enemyCoordinatesAsStrings
             }
         })
     }
